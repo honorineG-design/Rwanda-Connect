@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - Event Host | RwandaConnect</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+<header>
+  <h1>RwandaConnect</h1>
+  <nav>
+    <a href="index.html" data-translate="home">Home</a>
+    <a href="cities.html" data-translate="cities">Cities</a>
+    <a href="map.html" data-translate="map">Map</a>
+    <a href="login.html" data-translate="login">Login / Sign Up</a>
+    <select id="language-selector">
+      <option value="en">EN</option>
+      <option value="sw">SW</option>
+      <option value="rw">RW</option>
+      <option value="fr">FR</option>
+    </select>
+  </nav>
+</header>
+
+<main>
+  <div class="form-container">
+    <h2 data-translate="signupAsHost">Sign Up as Event Host</h2>
+
+    <form id="signup-form">
+      <div class="form-group">
+        <label for="fullName" data-translate="fullName">Full Name</label>
+        <input type="text" id="fullName" data-translate-placeholder="fullName" required>
+        <span class="error-message" data-translate="fieldRequired">This field is required</span>
+      </div>
+
+      <div class="form-group">
+        <label for="email" data-translate="email">Email</label>
+        <input type="email" id="email" data-translate-placeholder="email" required>
+        <span class="error-message" data-translate="fieldRequired">This field is required</span>
+      </div>
+
+      <div class="form-group">
+        <label for="organizationName" data-translate="organizationName">Organization Name</label>
+        <input type="text" id="organizationName" data-translate-placeholder="organizationName" required>
+        <span class="error-message" data-translate="fieldRequired">This field is required</span>
+      </div>
+
+      <div class="form-group">
+        <label for="username" data-translate="username">Username</label>
+        <input type="text" id="username" data-translate-placeholder="username" required>
+        <span class="error-message" data-translate="fieldRequired">This field is required</span>
+      </div>
+
+      <div class="form-group">
+        <label for="hostingType" data-translate="hostingType">What type of events do you host?</label>
+        <select id="hostingType" required>
+          <option value="">Select an option</option>
+          <option value="concerts">Concerts & Music</option>
+          <option value="sports">Sports & Fitness</option>
+          <option value="culture">Cultural Events</option>
+          <option value="business">Business & Conferences</option>
+          <option value="social">Social & Networking</option>
+          <option value="other">Other</option>
+        </select>
+        <span class="error-message" data-translate="fieldRequired">This field is required</span>
+      </div>
+
+      <div class="form-group">
+        <label for="password" data-translate="password">Password</label>
+        <input type="password" id="password" data-translate-placeholder="password" required>
+        <span class="error-message" data-translate="fieldRequired">This field is required</span>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword" data-translate="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" data-translate-placeholder="confirmPassword" required>
+        <span class="error-message" id="passwordError" data-translate="passwordsDontMatch">Passwords don't match</span>
+      </div>
+
+      <button type="submit" data-translate="createAccount">Create Account</button>
+    </form>
+
+    <div class="signup-link">
+      <p data-translate="alreadyAccount">Already have an account?</p>
+      <a href="login.html" data-translate="backToLogin">Back to Login</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p data-translate="copyright"> 2025 RwandaConnect. </p>
+</footer>
+
+<script src="lang.js"></script>
+<script>
+  const form = document.getElementById('signup-form');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    let isValid = true;
+    const inputs = form.querySelectorAll('input, select');
+    
+    inputs.forEach(input => {
+      const errorMsg = input.parentElement.querySelector('.error-message');
+      
+      if (!input.value || input.value.trim() === '') {
+        input.classList.add('error');
+        if (errorMsg) errorMsg.classList.add('show');
+        isValid = false;
+      } else {
+        input.classList.remove('error');
+        if (errorMsg) errorMsg.classList.remove('show');
+      }
+    });
+
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
+    const passwordError = document.getElementById('passwordError');
+
+    if (password.value !== confirmPassword.value) {
+      confirmPassword.classList.add('error');
+      passwordError.classList.add('show');
+      isValid = false;
+    } else {
+      confirmPassword.classList.remove('error');
+      passwordError.classList.remove('show');
+    }
+
+    const emailInput = document.getElementById('email');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailInput.value)) {
+      emailInput.classList.add('error');
+      emailInput.parentElement.querySelector('.error-message').textContent = 'Please enter a valid email';
+      emailInput.parentElement.querySelector('.error-message').classList.add('show');
+      isValid = false;
+    }
+
+    if (isValid) {
+      alert('Organization account created successfully!\n\nThis is a demo. In production, data would be sent to a backend server.');
+      form.reset();
+    }
+  });
+
+  const inputsList = form.querySelectorAll('input, select');
+  inputsList.forEach(input => {
+    input.addEventListener('input', () => {
+      if (input.value && input.value.trim()) {
+        input.classList.remove('error');
+        const errorMsg = input.parentElement.querySelector('.error-message');
+        if (errorMsg) errorMsg.classList.remove('show');
+      }
+    });
+  });
+
+  document.getElementById('language-selector').addEventListener('change', e => setLanguage(e.target.value));
+</script>
+
+</body>
+</html>
